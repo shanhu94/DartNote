@@ -1,4 +1,4 @@
-import 'package:learn/2_variables.dart' as variables;
+import 'package:learn/b_variables.dart' as variables;
 import 'package:test/test.dart';
 
 void main() {
