@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:math';
 
 /// 内建类型
@@ -274,6 +275,3 @@ void maps() {
   assert(spreadMap.length == cIfmap.length);
   assert(cIfmap.length == cForMap.length);
 }
-
-/// Runes and grapheme clusters
-
