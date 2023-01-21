@@ -108,6 +108,7 @@ void lexicalScope() {
     var insideFunc = true;
 
     void nestedFunction() {
+      // 作用域只在当前方法体(`{}`包含的东西)与子级方法体
       var insideNestedFunc = true;
       // 这里可以访问这4个变量
       assert(topLevel);
@@ -122,4 +123,25 @@ void lexicalScope() {
     assert(insideFunc);
     // insideNestedFunc 在这里无法访问
   }
+}
+
+/// 闭包 (Lexical closures)
+void lexicalClosures() {
+  int Function(int) makeAdder(int addBy) {
+    /// 返回的闭包(函数对象)捕获了addBy变量,
+    /// 不论这个函数在什么位置调用都可以正常使用这个addBy变量
+    return (int i) => addBy + i;
+  }
+
+  var add2 = makeAdder(2);
+  var add4 = makeAdder(4);
+  assert(add2(3) == 5);
+  assert(add4(3) == 7);
+}
+
+/// 所有的函数都会返回一个值
+/// 如果没有函数声明没有指定一个返回值, 会在函数体的最后拼接一句`return null;`
+void returnValue() {
+  testFunc() {} // 没有指定返回值, 默认返回null
+  assert(testFunc() == null);
 }

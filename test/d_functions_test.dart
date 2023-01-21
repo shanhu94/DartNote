@@ -14,4 +14,13 @@ void main() {
   test('anonymousFunction', () {
     func.anonymousFunctions();
   });
+  test('lexicalScope', () {
+    func.lexicalScope();
+  });
+  test('lexicalClosures', () {
+    func.lexicalClosures();
+  });
+  test('returnValue', () {
+    func.returnValue();
+  });
 }
