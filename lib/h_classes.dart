@@ -276,36 +276,56 @@ void accessAbstractClass() {
 }
 
 /// 隐式接口 (Implicit interfaces)
-class ImplicitInterfaces {
+class Implicit {
   /// 属性, 算隐式接口
   String text;
 
   /// 构造方法, 不算隐式接口
-  ImplicitInterfaces({required this.text});
+  Implicit({required this.text});
+}
+
+class ImplicitInterfaces {
+  /// 属性, 算隐式接口
+  String realText;
+
+  /// 构造方法, 不算隐式接口
+  ImplicitInterfaces(this.realText);
 
   /// 方法, 算隐式接口
   String compact(String left, String right) {
-    return left + text + right;
+    return left + realText + right;
   }
 }
 
 /// 使用 `extends` 是继承类
-/// 使用 `implements` 是实现接口
-class ImplicitClass implements ImplicitInterfaces {
+/// 使用 `implements` 是实现接口, 实现多个接口用 `,` 分割
+class ImplicitClass extends Implicit
+    implements ImplicitInterfaces, TableDataSource {
+  /// 继承构造方法, 同时初始化`ImplicitInterfaces`接口中属性值
+  ImplicitClass({required super.text}) : realText = text;
+
+  /// 实现 ImplicitInterfaces 的隐式接口
   @override
-  String text;
+  String realText;
 
-  ImplicitClass(this.text);
-
+  /// 实现 ImplicitInterfaces 的隐式接口
   @override
   String compact(String left, String right) {
-    return 'Implicit class: $left$text$right';
+    return 'Implicit class: $left $realText $right';
   }
+
+  /// TableDataSource 抽象类接口
+  @override
+  int get itemNumbers => 10;
+  @override
+  void configItem(int index) {}
+  @override
+  void logItem(int index) {}
 }
 
 void implicitInterfaces() {
-  var inter = ImplicitInterfaces(text: 'ImplicitInterfacesText');
-  var cls = ImplicitClass('ImplicitClassText');
+  var inter = ImplicitInterfaces('ImplicitInterfacesText');
+  var cls = ImplicitClass(text: 'ImplicitClassText');
   print(inter.compact('left', 'right'));
   print(cls.compact('left', 'right'));
 }
