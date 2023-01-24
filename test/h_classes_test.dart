@@ -14,4 +14,10 @@ void main() {
   test('Implicit interfaces', () {
     classes.implicitInterfaces();
   });
+  test('accessMixins', () {
+    classes.accessMixins();
+  });
+  test('accessClassVarMethod', () {
+    classes.accessClassVarMethod();
+  });
 }

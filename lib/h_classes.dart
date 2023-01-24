@@ -3,10 +3,8 @@ import 'dart:math';
 
 /// 枚举的声明, 只能放在顶级
 enum Sex {
-  other,
   male,
   female,
-  mix,
 }
 
 /// 类的声明, 只能放在顶级
@@ -55,7 +53,7 @@ class Person {
 
   /// 构造方法的重定向(Redirecting constructors)
   /// 重定向方法不能有方法体
-  Person.fromName(String name) : this(name, Sex.other);
+  Person.fromName(String name) : this(name, Sex.male);
 
   /// 普通的实例方法, 可以访问实例变量与`this`
   void logInfo() {
@@ -105,7 +103,7 @@ class Student extends Person {
   /// 方法内部可以调用该类的构造方法, 也可以调用子类的构造方法
   factory Student.fromCache(String name) {
     return _studentList.putIfAbsent(
-        name, () => Student(name, Sex.other, _studentList.length));
+        name, () => Student(name, Sex.male, _studentList.length));
   }
 
   /// 方法声明
@@ -328,4 +326,53 @@ void implicitInterfaces() {
   var cls = ImplicitClass(text: 'ImplicitClassText');
   print(inter.compact('left', 'right'));
   print(cls.compact('left', 'right'));
+}
+
+/// 类添加新的功能 (mixins)
+mixin Description {
+  String prefix = '';
+  String get description => '$prefix\nDescription: ${toString()}';
+}
+
+/// 限定只能继承于Animal的类, 可以使用此mixin
+/// 限定关键字 `on`
+mixin AnimalDescription on Animal {
+  String get description => 'Animal: \nDescription: ${toString()}';
+}
+
+/// 正常使用mixins, 使用`with`关键字
+class Box with Description {}
+
+class Animal {
+  String type;
+  Animal(this.type);
+}
+
+class Dog extends Animal with AnimalDescription {
+  Dog([super.type = ' Dog']);
+}
+
+void accessMixins() {
+  var box = Box();
+  print(box.description);
+
+  var dog = Dog();
+  print(dog.description);
+}
+
+/// 类变量与类方法, 使用`static`关键字
+class Manager {
+  // 类变量 , 不能访问`this`
+  // 类变量是懒加载的模式, 只有在第一次使用会初始化
+  static final shared = Manager();
+
+  // 类方法 , 不能访问`this`
+  static void log(Manager manager) {
+    print('Internal Log: $manager');
+  }
+}
+
+void accessClassVarMethod() {
+  var manager = Manager.shared;
+  Manager.log(manager);
 }
