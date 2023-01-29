@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -105,5 +106,67 @@ Future<void> requestAwait() async {
     print(text);
   } finally {
     client.close();
+  }
+}
+
+/// Stream 相关API的使用
+Future<void> useStream() {
+  final path = '.';
+  return FileSystemEntity.isDirectory(path).then((isDir) {
+    print('enter $isDir');
+    if (isDir) {
+      return Directory(path).list().listen((element) {
+        if (element is File) {
+          print('$element in Dir');
+        }
+      }).asFuture();
+    } else {
+      print('File: ${File(path)}');
+    }
+  });
+}
+
+/// Stream 与 async for 的组合
+Future<void> useStreamAwait() async {
+  final path = '.';
+  if (await FileSystemEntity.isDirectory(path)) {
+    try {
+      await for (final entity in Directory(path).list()) {
+        if (entity is File) {
+          print('File: $entity in Dir');
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  } else {
+    print('File: ${File(path)}');
+  }
+}
+
+/// Stream API 读取文件
+Future<void> readFileStream() {
+  final filePath = './pubspec.yaml';
+  final file = File(filePath);
+  return file.openRead().transform(utf8.decoder).transform(const LineSplitter()).listen((event) {
+    print('OUTPUT: $event');
+  }, onDone: () {
+    print('file is closed');
+  }, onError: (e) {
+    print('catch $e');
+  }).asFuture();
+}
+
+/// Stream await for 读取文件
+Future<void> readFileStreamAwait() async {
+  final filePath = './pubspec.yaml';
+  final file = File(filePath);
+  try {
+    await for (final ele in file.openRead().transform(utf8.decoder).transform(const LineSplitter())) {
+      print('OUTPUT: $ele');
+    }
+    print('file is closed');
+  } catch (e) {
+    print('catch $e');
   }
 }

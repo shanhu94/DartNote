@@ -15,4 +15,16 @@ void main() {
   test('requestAwait', () async {
     await asynchrony.requestAwait();
   });
+  test('useStream', () async {
+    await asynchrony.useStream();
+  });
+  test('useStreamAwait', () async {
+    await asynchrony.useStreamAwait();
+  });
+  test('readFileStream', () async {
+    await asynchrony.readFileStream();
+  });
+  test('readFileStreamAwait', () async {
+    await asynchrony.readFileStreamAwait();
+  });
 }
