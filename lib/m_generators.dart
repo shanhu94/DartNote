@@ -9,7 +9,7 @@
 /// **注意**: 不要使用原始普通的for循环, 当获取Iterable的长度时,就会完整的执行一次函数
 
 
-/// 同步生成器 (Synchronous generator) 返回 Iterable 对象
+/// 同步生成器 (Synchronous generator) 返回 Iterable 对象, 并在方法体之前添加 `sync*`
 Iterable<int> naturalsTo(int n) sync* {
   int k = 0;
   while (k < n) {
@@ -24,7 +24,7 @@ void syncGenerators() {
   }
 }
 
-/// 异步生成器 (Asynchronous generator) 返回 Stream 对象
+/// 异步生成器 (Asynchronous generator) 返回 Stream 对象, 并在方法体之前添加 `async*`
 Stream<int> dummyAsynchronousNaturalsTo(int n) async* {
   int k = 0;
   while (k < n) {
